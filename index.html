@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>สนามสอบ ม.ต้น</title>
+<meta name="description" content="ข้อสอบจำลอง ม.1–ม.3 ห้าวิชา วิชาละ 10 ข้อ สร้างห้องให้เพื่อนเข้ามาแข่งกันทำ พร้อมอันดับสดและเฉลย">
+<meta name="theme-color" content="#D2435A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%23D2435A' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='8' fill='%232B3140'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Sarabun:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: an OMR answer sheet. Pink-red printed grid, graphite pencil fills, one column on phones, sheet + live scoreboard side by side on wide screens. */
+:root{
+  --paper:#F6F8FB; --card:#FFFFFF; --ink:#1B2333; --muted:#5A6476; --line:#E2E6EE;
+  --sheet:#D2435A; --sheet-soft:#FBE7EB; --pencil:#2B3140; --blue:#2D58C8;
+  --ok:#1D8455; --ok-soft:#E2F4EB; --bad:#C23B33; --bad-soft:#FBE8E6;
+  --c0:#D2435A; --c1:#2D58C8; --c2:#1D8455; --c3:#C27A0E; --c4:#7A4CC2; --c5:#0E8A9A; --c6:#B54595; --c7:#5E7A1A;
+  --f-display:"Mitr","Sarabun",system-ui,sans-serif;
+  --f-body:"Sarabun",system-ui,"Noto Sans Thai",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#12151C; --card:#1A1E28; --ink:#E6E9EF; --muted:#9AA3B3; --line:#2A303D;
+  --sheet:#F27D90; --sheet-soft:#3A1F27; --pencil:#E6E9EF; --blue:#86A6FF;
+  --ok:#4CC48C; --ok-soft:#173327; --bad:#F27268; --bad-soft:#3A1E1C;
+  --c0:#F27D90; --c1:#86A6FF; --c2:#4CC48C; --c3:#F0B04A; --c4:#B596F2; --c5:#4FC7D6; --c6:#EE86CF; --c7:#A8C860;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#12151C; --card:#1A1E28; --ink:#E6E9EF; --muted:#9AA3B3; --line:#2A303D;
+  --sheet:#F27D90; --sheet-soft:#3A1F27; --pencil:#E6E9EF; --blue:#86A6FF;
+  --ok:#4CC48C; --ok-soft:#173327; --bad:#F27268; --bad-soft:#3A1E1C;
+  --c0:#F27D90; --c1:#86A6FF; --c2:#4CC48C; --c3:#F0B04A; --c4:#B596F2; --c5:#4FC7D6; --c6:#EE86CF; --c7:#A8C860;
+  color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.stack{display:flex;flex-direction:column;gap:20px}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;line-height:1.25;margin:0;text-wrap:balance}
+h1{font-size:clamp(30px,6vw,46px);font-weight:600}
+h2{font-size:22px}
+h3{font-size:17px}
+p{margin:0}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.lbl{font-family:var(--f-display);font-size:12px;letter-spacing:.08em;color:var(--sheet);text-transform:uppercase}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+/* top bar */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:18px;font-weight:500;background:none;border:0;padding:0}
+.brand-mark{width:30px;height:30px;border:2px solid var(--sheet);border-radius:50%;display:grid;place-items:center;font-size:14px;color:var(--sheet)}
+.brand-mark i{width:16px;height:16px;border-radius:50%;background:var(--pencil);display:block}
+.net{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.dot.on{background:var(--ok)}
+
+/* the sheet: printed answer-sheet look */
+.sheet{background:var(--card);border:1.5px solid var(--sheet);border-radius:var(--r);position:relative}
+.sheet-head{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-bottom:1.5px solid var(--sheet)}
+.sheet-head>div{padding:10px 14px;border-right:1px solid var(--sheet-soft);min-width:0}
+.sheet-head>div:last-child{border-right:0}
+.sheet-head .v{font-family:var(--f-display);font-size:17px;overflow-wrap:anywhere}
+.sheet-body{padding:20px;display:flex;flex-direction:column;gap:18px}
+.plain{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px}
+
+/* buttons */
+.btn{border:1.5px solid var(--ink);background:var(--card);border-radius:999px;padding:10px 20px;font-family:var(--f-display);font-size:16px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover{background:var(--paper)}
+.btn.primary{background:var(--sheet);border-color:var(--sheet);color:#fff}
+.btn.primary:hover{filter:brightness(1.06)}
+:root[data-theme="dark"] .btn.primary{color:#1A1E28}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#1A1E28}}
+.btn.ghost{border-color:var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.big{padding:14px 28px;font-size:18px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.field{display:flex;flex-direction:column;gap:6px}
+.input{border:1.5px solid var(--line);background:var(--paper);border-radius:8px;padding:10px 12px;width:100%;min-width:0}
+.input:focus{border-color:var(--sheet);outline:none}
+.input.code{font-family:var(--f-mono);font-size:22px;letter-spacing:.2em;text-transform:uppercase;text-align:center}
+
+/* home */
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:end}
+.hero p{max-width:52ch;font-size:17px}
+.bubbles-deco{display:grid;grid-template-columns:auto repeat(4,28px);gap:8px 10px;align-items:center;justify-self:end;font-family:var(--f-mono);font-size:13px;color:var(--sheet)}
+.bubbles-deco span.b{width:28px;height:28px;border:1.5px solid var(--sheet);border-radius:50%;display:grid;place-items:center;font-family:var(--f-body);font-size:13px}
+.bubbles-deco span.b.f{background:var(--pencil);border-color:var(--pencil);color:transparent}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rooms{display:flex;flex-direction:column;gap:8px}
+.room-item{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
+.room-item .mono{font-size:18px;letter-spacing:.12em;color:var(--sheet)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;border-radius:999px;padding:2px 10px;background:var(--sheet-soft);color:var(--sheet);font-family:var(--f-display);white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.empty{border:1.5px dashed var(--line);border-radius:8px;padding:16px;color:var(--muted);text-align:center}
+.codes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.codes div{border-top:2px solid var(--sheet);padding-top:6px;min-width:0}
+.codes b{font-family:var(--f-display);font-weight:500;display:block}
+
+/* lobby */
+.bigcode{font-family:var(--f-mono);font-size:clamp(30px,7vw,44px);letter-spacing:.18em;color:var(--sheet);line-height:1.1}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:8px 18px;font-family:var(--f-display)}
+.seg button+button{border-left:1.5px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.subjects{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.subj{border:1.5px solid var(--line);background:var(--card);border-radius:8px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:0}
+.subj .mono{font-size:13px;color:var(--muted)}
+.subj b{font-family:var(--f-display);font-weight:500;font-size:16px}
+.subj[aria-pressed="true"]{border-color:var(--sheet);background:var(--sheet-soft)}
+.subj[aria-pressed="true"] .mono{color:var(--sheet)}
+.subj:disabled{cursor:default}
+.players{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;background:var(--card);max-width:100%}
+.av{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:var(--f-display);font-size:13px;flex:none}
+:root[data-theme="dark"] .av{color:#12151C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .av{color:#12151C}}
+.chip span.n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.note{border-left:3px solid var(--sheet);padding:8px 12px;background:var(--sheet-soft);border-radius:0 8px 8px 0;font-size:15px}
+.linkbox{display:flex;gap:8px;flex-wrap:wrap}
+.linkbox .input{flex:1 1 240px;font-family:var(--f-mono);font-size:13px}
+
+/* play */
+.play{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+.timer{height:8px;border-radius:4px;background:var(--sheet-soft);overflow:hidden}
+.timer i{display:block;height:100%;background:var(--sheet);width:100%;transform-origin:left;transition:background .2s}
+.timer.low i{background:var(--bad)}
+.qnum{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.qtext{font-size:clamp(19px,2.6vw,23px);line-height:1.55;font-weight:500;white-space:pre-line}
+.choices{display:flex;flex-direction:column;gap:10px}
+.ch{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:center;text-align:left;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:10px 14px 10px 10px;min-height:58px}
+.ch:not(:disabled):hover{border-color:var(--sheet)}
+.ch:disabled{cursor:default}
+.bub{width:40px;height:40px;border-radius:50%;border:2px solid var(--sheet);display:grid;place-items:center;font-family:var(--f-display);color:var(--sheet);font-size:17px;position:relative}
+.ch .t{min-width:0;overflow-wrap:anywhere}
+.ch.picked .bub{background:var(--pencil);border-color:var(--pencil);color:transparent}
+.ch.right{border-color:var(--ok);background:var(--ok-soft)}
+.ch.right .bub{border-color:var(--ok);color:var(--ok)}
+.ch.right.picked .bub{background:var(--ok);border-color:var(--ok)}
+.ch.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.ch.wrong .bub{background:var(--bad);border-color:var(--bad)}
+.fb{border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.fb.ok{background:var(--ok-soft)}
+.fb.bad{background:var(--bad-soft)}
+.fb h3{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.fb .pts{font-family:var(--f-mono);font-size:15px}
+.board{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+.lb{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.lb li{display:grid;grid-template-columns:22px 26px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 8px;border-radius:8px}
+.lb li.me{background:var(--sheet-soft)}
+.lb .rk{font-family:var(--f-mono);color:var(--muted);font-size:13px;text-align:right}
+.lb .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb .sc{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-weight:600}
+.marks{display:flex;gap:3px;margin-top:2px}
+.marks i{width:8px;height:8px;border-radius:50%;border:1px solid var(--line)}
+.marks i.y{background:var(--ok);border-color:var(--ok)}
+.marks i.n{background:var(--bad);border-color:var(--bad)}
+
+/* results */
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:end}
+.pod{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-width:0}
+.pod .blk{width:100%;border:1.5px solid var(--sheet);border-bottom:0;border-radius:8px 8px 0 0;display:grid;place-items:center;font-family:var(--f-mono);font-size:28px;color:var(--sheet);background:var(--sheet-soft)}
+.pod.p1 .blk{height:120px}
+.pod.p2 .blk{height:88px}
+.pod.p3 .blk{height:64px}
+.pod .nm{font-family:var(--f-display);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.score-big{font-family:var(--f-mono);font-size:clamp(44px,10vw,64px);line-height:1;color:var(--sheet)}
+.review{display:flex;flex-direction:column;gap:0;margin:0;padding:0;list-style:none}
+.review li{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.review li:first-child{border-top:0}
+.review .k{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-size:13px;color:#fff}
+:root[data-theme="dark"] .review .k{color:#12151C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .review .k{color:#12151C}}
+.review .k.y{background:var(--ok)}
+.review .k.n{background:var(--bad)}
+.review .q{font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stats div{border-top:2px solid var(--sheet);padding-top:6px}
+.stats b{font-family:var(--f-mono);font-size:22px;display:block}
+
+@media (max-width:820px){
+  .play{grid-template-columns:1fr}
+  .board{position:static}
+  .subjects,.codes{grid-template-columns:repeat(2,1fr)}
+  .subjects .subj:last-child{grid-column:1/-1}
+}
+@media (max-width:640px){
+  .hero,.split{grid-template-columns:1fr}
+  .bubbles-deco{display:none}
+  .sheet-body{padding:16px}
+  .codes div:last-child{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:no-preference){
+  .ch,.btn,.subj{transition:background .15s,border-color .15s}
+  .pop{animation:pop .35s ease-out}
+  @keyframes pop{from{transform:translateY(6px)}to{transform:none}}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <button class="brand" id="brand" type="button" aria-label="กลับหน้าแรก"><span class="brand-mark"><i></i></span>สนามสอบ ม.ต้น</button>
+    <div class="net" id="net"><span class="dot" id="netdot"></span><span id="nettext">กำลังเชื่อมต่อ…</span></div>
+  </div>
+  <main id="app"></main>
+</div>
+<script>
+const LABELS = ["ก","ข","ค","ง"];
+const QTIME = 20000;
+const SUBJ = [
+  {id:"math", name:"คณิตศาสตร์", code:"ค"},
+  {id:"sci",  name:"วิทยาศาสตร์", code:"ว"},
+  {id:"thai", name:"ภาษาไทย", code:"ท"},
+  {id:"eng",  name:"ภาษาอังกฤษ", code:"อ"},
+  {id:"soc",  name:"สังคมศึกษาฯ", code:"ส"},
+];
+const subjOf = id => SUBJ.find(s => s.id === id) || SUBJ[0];
+const courseCode = (g, s) => subjOf(s).code + "2" + g + "101";
+
+// [คำถาม, [ก, ข, ค, ง], ข้อที่ถูก (0-3), เฉลย]
+const BANK = {
+1: {
+math: [
+  ["(−8) + 5 − (−3) มีค่าเท่าใด", ["−6","0","6","−16"], 1, "−8 + 5 = −3 แล้ว −3 − (−3) = −3 + 3 = 0"],
+  ["(−4) × (−6) ÷ 3 มีค่าเท่าใด", ["8","−8","24","−24"], 0, "ลบคูณลบได้บวก (−4)(−6) = 24 แล้ว 24 ÷ 3 = 8"],
+  ["2⁵ มีค่าเท่าใด", ["10","25","32","64"], 2, "2 × 2 × 2 × 2 × 2 = 32"],
+  ["3.6 × 10⁴ เขียนเป็นจำนวนเต็มได้ว่าอย่างไร", ["3,600","36,000","360,000","360"], 1, "เลื่อนจุดทศนิยมไปทางขวา 4 ตำแหน่ง ได้ 36,000"],
+  ["ถ้า 2x + 7 = 19 แล้ว x มีค่าเท่าใด", ["5","6","12","13"], 1, "2x = 19 − 7 = 12 ดังนั้น x = 6"],
+  ["3/4 + 1/6 มีค่าเท่าใด", ["4/10","11/12","1/3","5/6"], 1, "ทำส่วนให้เท่ากันเป็น 12 ได้ 9/12 + 2/12 = 11/12"],
+  ["ห้องเรียนมีนักเรียน 40 คน อัตราส่วนชายต่อหญิงเป็น 3 : 5 มีนักเรียนชายกี่คน", ["15","24","25","8"], 0, "ชายคิดเป็น 3 ส่วนจาก 8 ส่วน 40 × 3/8 = 15 คน"],
+  ["ห.ร.ม. ของ 18 และ 24 คือข้อใด", ["3","6","12","72"], 1, "18 = 2×3×3, 24 = 2×2×2×3 ตัวร่วมมาก คือ 2×3 = 6"],
+  ["ค.ร.น. ของ 4, 6 และ 10 คือข้อใด", ["30","60","120","240"], 1, "ใช้ 2² × 3 × 5 = 60"],
+  ["ปริซึมสามเหลี่ยมมีหน้าทั้งหมดกี่หน้า", ["3","5","6","9"], 1, "มีฐานสามเหลี่ยม 2 หน้า และหน้าข้างสี่เหลี่ยม 3 หน้า รวม 5 หน้า"],
+],
+sci: [
+  ["ออร์แกเนลล์ใดพบในเซลล์พืช แต่ไม่พบในเซลล์สัตว์", ["นิวเคลียส","ไมโทคอนเดรีย","คลอโรพลาสต์","เยื่อหุ้มเซลล์"], 2, "คลอโรพลาสต์มีคลอโรฟิลล์ใช้สังเคราะห์ด้วยแสง พบในเซลล์พืช"],
+  ["ผลิตภัณฑ์ของการสังเคราะห์ด้วยแสงคือข้อใด", ["น้ำและคาร์บอนไดออกไซด์","น้ำตาลและออกซิเจน","น้ำตาลและคาร์บอนไดออกไซด์","ออกซิเจนและน้ำ"], 1, "พืชใช้น้ำ + CO₂ + แสง ได้น้ำตาล (กลูโคส) และแก๊สออกซิเจน"],
+  ["การเคลื่อนที่ของน้ำผ่านเยื่อเลือกผ่าน จากบริเวณที่มีน้ำมากไปยังบริเวณที่มีน้ำน้อย เรียกว่าอะไร", ["การแพร่","ออสโมซิส","การคายน้ำ","การลำเลียง"], 1, "ออสโมซิสคือการแพร่ของน้ำผ่านเยื่อเลือกผ่าน"],
+  ["วิธีใดเหมาะสำหรับแยกเกลือออกจากน้ำเกลือ", ["การกรอง","การระเหยแห้ง","การใช้กรวยแยก","การตกตะกอน"], 1, "ให้ความร้อนจนน้ำระเหยหมด เหลือเกลือไว้"],
+  ["ข้อใดเป็นสารบริสุทธิ์", ["น้ำเกลือ","อากาศ","น้ำกลั่น","น้ำอัดลม"], 2, "น้ำกลั่นมีองค์ประกอบเป็นน้ำเพียงอย่างเดียว ข้ออื่นเป็นสารผสม"],
+  ["ไซเลมในพืชทำหน้าที่ใด", ["ลำเลียงอาหาร","ลำเลียงน้ำและธาตุอาหาร","สร้างอาหาร","แลกเปลี่ยนแก๊ส"], 1, "ไซเลมลำเลียงน้ำและธาตุอาหารจากรากขึ้นสู่ใบ ส่วนโฟลเอ็มลำเลียงอาหาร"],
+  ["หน่วยของพลังงานความร้อนในระบบ SI คือข้อใด", ["องศาเซลเซียส","จูล","วัตต์","นิวตัน"], 1, "พลังงานทุกรูปแบบมีหน่วย SI เป็นจูล (J)"],
+  ["เครื่องมือใดใช้วัดความกดอากาศ", ["เทอร์มอมิเตอร์","ไฮโกรมิเตอร์","บารอมิเตอร์","แอนิโมมิเตอร์"], 2, "บารอมิเตอร์วัดความกดอากาศ ไฮโกรมิเตอร์วัดความชื้น แอนิโมมิเตอร์วัดอัตราเร็วลม"],
+  ["ลูกเหม็นในตู้เสื้อผ้าค่อย ๆ เล็กลง เกิดจากการเปลี่ยนสถานะแบบใด", ["การหลอมเหลว","การระเหย","การระเหิด","การควบแน่น"], 2, "การระเหิดคือของแข็งเปลี่ยนเป็นแก๊สโดยไม่ผ่านของเหลว"],
+  ["ส่วนใดของดอกทำหน้าที่สร้างละอองเรณู", ["อับเรณู","ยอดเกสรเพศเมีย","รังไข่","กลีบเลี้ยง"], 0, "อับเรณูเป็นส่วนของเกสรเพศผู้ ทำหน้าที่สร้างละอองเรณู"],
+],
+thai: [
+  ["ข้อใดเป็นคำประสม", ["แม่น้ำ","มะละกอ","นาฬิกา","ทะเลาะ"], 0, "แม่ + น้ำ เกิดความหมายใหม่ ส่วนข้ออื่นเป็นคำมูล"],
+  ["อักษรกลางในภาษาไทยมีกี่ตัว", ["7 ตัว","9 ตัว","11 ตัว","24 ตัว"], 1, "ก จ ฎ ฏ ด ต บ ป อ รวม 9 ตัว"],
+  ["คำว่า “ขา” ออกเสียงวรรณยุกต์ใด", ["สามัญ","เอก","โท","จัตวา"], 3, "ข เป็นอักษรสูง คำเป็น ไม่มีรูปวรรณยุกต์ ออกเสียงจัตวา"],
+  ["คำว่า “น้ำ” ออกเสียงวรรณยุกต์ใด", ["เอก","โท","ตรี","จัตวา"], 2, "น เป็นอักษรต่ำ ใช้ไม้โท ออกเสียงตรี"],
+  ["ข้อใดเป็นคำนาม", ["วิ่ง","สวย","โรงเรียน","อย่างรวดเร็ว"], 2, "โรงเรียนเป็นชื่อสถานที่ จึงเป็นคำนาม"],
+  ["ข้อใดเป็นคำซ้อน", ["รถไฟ","บ้านเรือน","เด็ก ๆ","ผ้าห่ม"], 1, "บ้าน + เรือน ความหมายคล้ายกันมาซ้อนกัน รถไฟและผ้าห่มเป็นคำประสม เด็ก ๆ เป็นคำซ้ำ"],
+  ["“กาพย์เรื่องพระไชยสุริยา” เป็นผลงานของใคร", ["สุนทรภู่","ศรีปราชญ์","เจ้าฟ้าธรรมธิเบศร","รัชกาลที่ 2"], 0, "สุนทรภู่แต่งไว้เพื่อสอนอ่านเขียน เรียงตามแม่กก กง กน ฯลฯ"],
+  ["สำนวน “น้ำขึ้นให้รีบตัก” หมายถึงอะไร", ["ทำงานให้เสร็จก่อนเวลา","มีโอกาสดีให้รีบทำ","ประหยัดน้ำ","อย่าทำอะไรรีบร้อน"], 1, "เมื่อมีโอกาสหรือจังหวะดีควรรีบฉวยไว้"],
+  ["คำราชาศัพท์ “เสวย” หมายถึงอะไร", ["นอน","อาบน้ำ","กิน","เดิน"], 2, "เสวย แปลว่า กิน ใช้กับพระมหากษัตริย์และพระบรมวงศ์"],
+  ["ข้อใดเป็นคำที่มีอักษรนำ", ["ปลา","หมา","ขวาน","ทราบ"], 1, "ห นำ ม ทำให้ออกเสียงตามอักษรสูง ข้ออื่นเป็นคำควบกล้ำ"],
+],
+eng: [
+  ["She ___ to school every day.", ["go","goes","going","gone"], 1, "Present simple กับประธานเอกพจน์บุรุษที่ 3 เติม -es"],
+  ["There ___ many books on the table.", ["is","am","are","be"], 2, "many books เป็นพหูพจน์ ใช้ There are"],
+  ["What is the opposite of “cheap”?", ["poor","expensive","small","easy"], 1, "cheap = ถูก ตรงข้ามกับ expensive = แพง"],
+  ["___ is your birthday? — It's on 5 May.", ["What","Who","When","Where"], 2, "ถามเวลา/วันที่ใช้ When"],
+  ["The plural of “child” is ___.", ["childs","childes","children","childrens"], 2, "child เป็นนามรูปพหูพจน์ไม่ปกติ ใช้ children"],
+  ["Look! They ___ football now.", ["play","are playing","played","plays"], 1, "Look! และ now บอกว่ากำลังเกิดขึ้น ใช้ present continuous"],
+  ["I was born ___ 2013.", ["on","at","in","to"], 2, "ใช้ in กับปี เดือน และฤดู"],
+  ["Which word is a fruit?", ["carrot","papaya","cabbage","onion"], 1, "papaya = มะละกอ ข้ออื่นเป็นผัก"],
+  ["A: Can you pass me the salt?  B: ___", ["Sure, here you are.","Yes, I can't.","No, thank you.","You're welcome."], 0, "ตอบรับคำขอร้องและยื่นของให้ใช้ Here you are."],
+  ["My father ___ a doctor. He works at a hospital.", ["am","is","are","be"], 1, "My father เป็นเอกพจน์ ใช้ is"],
+],
+soc: [
+  ["ใครเป็นผู้ประดิษฐ์ลายสือไทย", ["พ่อขุนศรีอินทราทิตย์","พ่อขุนรามคำแหงมหาราช","พญาลิไท","พ่อขุนบานเมือง"], 1, "ศิลาจารึกหลักที่ 1 ระบุว่าพ่อขุนรามคำแหงทรงประดิษฐ์ลายสือไทยเมื่อ พ.ศ. 1826"],
+  ["การปกครองสมัยสุโขทัยตอนต้นมีลักษณะแบบใด", ["นายปกครองบ่าว","พ่อปกครองลูก","ธรรมราชา","สมบูรณาญาสิทธิราชย์"], 1, "กษัตริย์ใกล้ชิดราษฎรเหมือนพ่อดูแลลูก"],
+  ["ในอริยสัจ 4 ข้อใดหมายถึงสาเหตุของทุกข์", ["ทุกข์","สมุทัย","นิโรธ","มรรค"], 1, "สมุทัยคือเหตุแห่งทุกข์ ได้แก่ ตัณหา"],
+  ["ทวีปใดมีพื้นที่มากที่สุดในโลก", ["แอฟริกา","อเมริกาเหนือ","เอเชีย","ยุโรป"], 2, "เอเชียมีพื้นที่ประมาณ 44 ล้านตารางกิโลเมตร มากที่สุดในโลก"],
+  ["ยอดเขาที่สูงที่สุดในโลกคือข้อใด", ["คิลิมันจาโร","เอเวอเรสต์","ฟูจิ","มงบล็อง"], 1, "เอเวอเรสต์ในเทือกเขาหิมาลัย สูงประมาณ 8,849 เมตร"],
+  ["เครื่องมือใดใช้ดาวเทียมระบุตำแหน่งบนพื้นโลก", ["เข็มทิศ","GPS","ลูกโลก","แผนที่เล่ม"], 1, "GPS (Global Positioning System) ใช้สัญญาณจากดาวเทียมหาพิกัด"],
+  ["เศรษฐศาสตร์เป็นวิชาที่ศึกษาเรื่องใด", ["การหาเงินให้ได้มากที่สุด","การจัดสรรทรัพยากรที่มีจำกัดอย่างคุ้มค่า","การทำบัญชีครัวเรือน","การค้าขายระหว่างประเทศเท่านั้น"], 1, "ทรัพยากรมีจำกัดแต่ความต้องการไม่จำกัด จึงต้องเลือกใช้ให้คุ้มค่า"],
+  ["ประเทศไทยปัจจุบันปกครองด้วยระบอบใด", ["สมบูรณาญาสิทธิราชย์","ประชาธิปไตยอันมีพระมหากษัตริย์ทรงเป็นประมุข","สังคมนิยม","ประธานาธิบดี"], 1, "ระบอบประชาธิปไตยอันมีพระมหากษัตริย์ทรงเป็นประมุข ตามรัฐธรรมนูญ"],
+  ["วันมาฆบูชาเป็นวันสำคัญเพราะเหตุการณ์ใด", ["พระพุทธเจ้าประสูติ","แสดงปฐมเทศนา","แสดงโอวาทปาติโมกข์","เสด็จดับขันธปรินิพพาน"], 2, "วันเพ็ญเดือน 3 พระพุทธเจ้าแสดงโอวาทปาติโมกข์แก่พระสงฆ์ 1,250 รูป"],
+  ["“ในน้ำมีปลา ในนามีข้าว” ปรากฏในหลักฐานใด", ["ศิลาจารึกหลักที่ 1","พงศาวดารเหนือ","ไตรภูมิพระร่วง","จดหมายเหตุลาลูแบร์"], 0, "ข้อความในศิลาจารึกพ่อขุนรามคำแหง บอกความอุดมสมบูรณ์ของสุโขทัย"],
+],
+},
+2: {
+math: [
+  ["สามเหลี่ยมมุมฉากมีด้านประกอบมุมฉากยาว 6 และ 8 หน่วย ด้านตรงข้ามมุมฉากยาวเท่าใด", ["10","12","14","48"], 0, "c² = 6² + 8² = 36 + 64 = 100 ดังนั้น c = 10"],
+  ["√49 + √16 มีค่าเท่าใด", ["7","11","√65","13"], 1, "√49 = 7 และ √16 = 4 รวมเป็น 11"],
+  ["ข้อใดเป็นจำนวนอตรรกยะ", ["0.25","√9","√2","22/7"], 2, "√2 เขียนเป็นเศษส่วนของจำนวนเต็มไม่ได้ ส่วน √9 = 3"],
+  ["a³ × a⁴ เท่ากับข้อใด", ["a⁷","a¹²","a","2a⁷"], 0, "ฐานเดียวกันคูณกัน นำเลขชี้กำลังมาบวกกัน 3 + 4 = 7"],
+  ["(x + 3)(x − 3) เท่ากับข้อใด", ["x² − 9","x² + 9","x² − 6x − 9","x² + 6x − 9"], 0, "ผลต่างกำลังสอง (a + b)(a − b) = a² − b²"],
+  ["x² + 5x + 6 แยกตัวประกอบได้เป็นข้อใด", ["(x + 1)(x + 6)","(x + 2)(x + 3)","(x − 2)(x − 3)","(x + 5)(x + 1)"], 1, "หาสองจำนวนที่คูณได้ 6 บวกได้ 5 คือ 2 และ 3"],
+  ["ทรงกระบอกรัศมี 7 ซม. สูง 10 ซม. มีปริมาตรเท่าใด (π ≈ 22/7)", ["440 ลบ.ซม.","1,540 ลบ.ซม.","3,080 ลบ.ซม.","220 ลบ.ซม."], 1, "πr²h = 22/7 × 49 × 10 = 1,540 ลบ.ซม."],
+  ["เลื่อนขนานจุด (2, 3) ไปทางขวา 4 หน่วย และลง 1 หน่วย จะได้จุดใด", ["(6, 2)","(6, 4)","(−2, 2)","(2, 7)"], 0, "x เพิ่ม 4 เป็น 6 และ y ลด 1 เป็น 2"],
+  ["ค่าเฉลี่ยเลขคณิตของ 4, 7, 9, 10, 15 คือข้อใด", ["7","9","10","11"], 1, "ผลรวม 45 หารด้วย 5 ได้ 9"],
+  ["มัธยฐานของข้อมูล 3, 8, 5, 12, 7 คือข้อใด", ["5","7","7.5","8"], 1, "เรียงเป็น 3, 5, 7, 8, 12 ตัวกลางคือ 7"],
+],
+sci: [
+  ["ห้องใดของหัวใจสูบฉีดเลือดไปเลี้ยงทั่วร่างกาย", ["ห้องบนขวา","ห้องล่างขวา","ห้องบนซ้าย","ห้องล่างซ้าย"], 3, "ห้องล่างซ้ายมีผนังหนาที่สุด สูบเลือดแดงออกทางเอออร์ตา"],
+  ["หน่วยที่ทำหน้าที่กรองของเสียในไตเรียกว่าอะไร", ["เนฟรอน","แอลวีโอลัส","นิวรอน","วิลไล"], 0, "เนฟรอน (หน่วยไต) กรองของเสียออกจากเลือด"],
+  ["การแลกเปลี่ยนแก๊สในปอดเกิดขึ้นที่ส่วนใด", ["หลอดลม","ขั้วปอด","ถุงลม","กะบังลม"], 2, "ถุงลม (แอลวีโอลัส) มีหลอดเลือดฝอยล้อมรอบ จึงแลกเปลี่ยนแก๊สได้"],
+  ["ละลายน้ำตาล 20 กรัม ได้สารละลาย 200 กรัม ความเข้มข้นร้อยละโดยมวลเป็นเท่าใด", ["5%","10%","20%","40%"], 1, "(20 ÷ 200) × 100 = 10%"],
+  ["ออกแรง 10 นิวตันดันกล่องไปได้ 5 เมตรในทิศเดียวกับแรง งานที่ทำเป็นเท่าใด", ["2 J","15 J","50 J","500 J"], 2, "W = F × s = 10 × 5 = 50 จูล"],
+  ["วัตถุมวล 2 kg เคลื่อนที่ด้วยความเร็ว 3 m/s มีพลังงานจลน์เท่าใด", ["6 J","9 J","12 J","18 J"], 1, "Ek = ½mv² = ½ × 2 × 3² = 9 จูล"],
+  ["ออกแรง 20 นิวตันที่ระยะ 0.5 เมตรจากจุดหมุน เกิดโมเมนต์เท่าใด", ["10 N·m","20 N·m","40 N·m","0.025 N·m"], 0, "โมเมนต์ = แรง × ระยะตั้งฉาก = 20 × 0.5 = 10 N·m"],
+  ["แรงที่ของเหลวดันวัตถุที่อยู่ในของเหลวขึ้นด้านบน เรียกว่าอะไร", ["แรงเสียดทาน","แรงลอยตัว","แรงโน้มถ่วง","แรงตึงผิว"], 1, "แรงลอยตัวมีทิศขึ้น ทำให้วัตถุดูเบาลงเมื่ออยู่ในน้ำ"],
+  ["ระบบประสาทส่วนกลางประกอบด้วยอะไร", ["สมองและไขสันหลัง","สมองและเส้นประสาท","ไขสันหลังและเส้นประสาท","หัวใจและสมอง"], 0, "เส้นประสาทที่แยกออกไปทั่วร่างกายเป็นระบบประสาทรอบนอก"],
+  ["ฮอร์โมนเทสโทสเตอโรนสร้างจากอวัยวะใด", ["รังไข่","อัณฑะ","ต่อมไทรอยด์","ตับอ่อน"], 1, "อัณฑะสร้างอสุจิและฮอร์โมนเพศชาย"],
+],
+thai: [
+  ["คำว่า “พุทธศาสนา” สร้างคำด้วยวิธีใด", ["คำสมาส","คำสนธิ","คำประสม","คำซ้อน"], 0, "พุทธ + ศาสนา เป็นคำบาลีสันสกฤตมาต่อกันโดยไม่เปลี่ยนเสียง จึงเป็นคำสมาส"],
+  ["ข้อใดเป็นคำสมาสแบบมีสนธิ", ["ราชบุตร","ราชทูต","ราชูปถัมภ์","ราชการ"], 2, "ราช + อุปถัมภ์ เชื่อมเสียงกลายเป็น ราชูปถัมภ์"],
+  ["โคลงสี่สุภาพ 1 บท (ไม่นับคำสร้อย) มีกี่คำ", ["28 คำ","30 คำ","32 คำ","34 คำ"], 1, "บาทที่ 1–3 บาทละ 7 คำ บาทที่ 4 มี 9 คำ รวม 30 คำ"],
+  ["“บทพากย์เอราวัณ” เป็นพระราชนิพนธ์ในรัชกาลใด", ["รัชกาลที่ 1","รัชกาลที่ 2","รัชกาลที่ 4","รัชกาลที่ 6"], 1, "พระบาทสมเด็จพระพุทธเลิศหล้านภาลัย (รัชกาลที่ 2) ทรงพระราชนิพนธ์"],
+  ["กาพย์ยานี 11 วรรคหน้ามีกี่คำ", ["4 คำ","5 คำ","6 คำ","7 คำ"], 1, "วรรคหน้า 5 คำ วรรคหลัง 6 คำ รวมเป็น 11"],
+  ["“โคลงโลกนิติ” เป็นวรรณคดีประเภทใด", ["นิราศ","คำสอน","เสภา","บทละคร"], 1, "เนื้อหาเป็นสุภาษิตสอนใจ แปลจากคัมภีร์ภาษาบาลี"],
+  ["ข้อใดเป็นประโยคความซ้อน", ["ฉันกินข้าว","ฉันกินข้าวแล้วไปโรงเรียน","ฉันเห็นนกที่บินอยู่บนฟ้า","พ่อทำงานแต่แม่อยู่บ้าน"], 2, "มีประโยคย่อย “ที่บินอยู่บนฟ้า” ขยายคำว่านก"],
+  ["คำใดเป็นคำยืมจากภาษาเขมร", ["เสด็จ","กษัตริย์","คอมพิวเตอร์","ก๋วยเตี๋ยว"], 0, "เสด็จมาจากเขมร กษัตริย์มาจากสันสกฤต ก๋วยเตี๋ยวมาจากจีน"],
+  ["สำนวน “ตีวัวกระทบคราด” หมายถึงอะไร", ["ทำงานหนักเกินตัว","โกรธคนหนึ่งแต่ไปลงกับอีกสิ่งหนึ่ง","ทำสิ่งที่ไร้ประโยชน์","พูดจาอ้อมค้อม"], 1, "โกรธใครแล้วไม่ว่าตรง ๆ แต่ไประบายกับสิ่งอื่นแทน"],
+  ["ข้อใดสะกดถูกทุกคำ", ["อนุญาติ สังเกต กะทันหัน","อนุญาต สังเกตุ กะทันหัน","อนุญาต สังเกต กะทันหัน","อนุญาต สังเกต กระทันหัน"], 2, "เขียนว่า อนุญาต สังเกต กะทันหัน"],
+],
+eng: [
+  ["Yesterday I ___ to the market with my mum.", ["go","goes","went","going"], 2, "Yesterday ใช้ past simple, go → went"],
+  ["What is the past form of “buy”?", ["buyed","bought","brought","buied"], 1, "buy → bought (brought มาจาก bring)"],
+  ["Mali is ___ than her sister.", ["tall","taller","tallest","more tall"], 1, "เปรียบเทียบสองคนใช้ -er + than"],
+  ["Mount Everest is the ___ mountain in the world.", ["high","higher","highest","most high"], 2, "ขั้นสูงสุดใช้ the + -est"],
+  ["I have lived in Chiang Mai ___ 2020.", ["for","since","at","from"], 1, "since + จุดเวลาที่เริ่มต้น, for + ช่วงเวลา"],
+  ["If it rains tomorrow, we ___ at home.", ["stay","stayed","will stay","would stay"], 2, "First conditional: If + present, will + V1"],
+  ["You ___ wear a helmet when you ride a motorbike.", ["must","mustn't","don't have to","may not"], 0, "บอกสิ่งที่ต้องทำตามกฎใช้ must"],
+  ["There isn't ___ milk in the fridge.", ["some","any","many","a"], 1, "ประโยคปฏิเสธใช้ any และ milk นับไม่ได้จึงใช้ many ไม่ได้"],
+  ["A: ___ is this shirt?  B: It's 250 baht.", ["How many","How much","How long","How often"], 1, "ถามราคาใช้ How much"],
+  ["Which word has the same meaning as “happy”?", ["angry","glad","tired","afraid"], 1, "glad = ดีใจ มีความหมายใกล้เคียง happy"],
+],
+soc: [
+  ["ผู้สถาปนากรุงศรีอยุธยาคือใคร", ["พ่อขุนรามคำแหง","สมเด็จพระรามาธิบดีที่ 1 (พระเจ้าอู่ทอง)","สมเด็จพระนเรศวรมหาราช","สมเด็จพระบรมไตรโลกนาถ"], 1, "พระเจ้าอู่ทองสถาปนากรุงศรีอยุธยาเมื่อ พ.ศ. 1893"],
+  ["กรุงศรีอยุธยาสถาปนาขึ้นใน พ.ศ. ใด", ["1792","1893","2112","2310"], 1, "พ.ศ. 1893 และเสียกรุงครั้งที่ 2 ใน พ.ศ. 2310"],
+  ["การปกครองแบบจตุสดมภ์ประกอบด้วยกรมใดบ้าง", ["เวียง วัง คลัง นา","ทหาร พลเรือน คลัง นา","มหาดไทย กลาโหม คลัง วัง","เวียง วัง ทหาร ศาล"], 0, "เวียง (เมือง) วัง คลัง นา เป็น 4 หลักของการปกครองราชธานี"],
+  ["แม่น้ำสายใดยาวที่สุดในทวีปแอฟริกา", ["คองโก","ไนเจอร์","ไนล์","แซมเบซี"], 2, "แม่น้ำไนล์ยาวประมาณ 6,650 กิโลเมตร ไหลลงทะเลเมดิเตอร์เรเนียน"],
+  ["ทะเลทรายที่ใหญ่ที่สุดในทวีปแอฟริกาคือข้อใด", ["กาลาฮารี","สะฮารา","นามิบ","โกบี"], 1, "สะฮาราอยู่ทางเหนือของทวีป ส่วนโกบีอยู่ในเอเชีย"],
+  ["เทือกเขาแอลป์ตั้งอยู่ในทวีปใด", ["เอเชีย","ยุโรป","อเมริกาใต้","แอฟริกา"], 1, "แอลป์พาดผ่านฝรั่งเศส สวิตเซอร์แลนด์ อิตาลี ออสเตรีย"],
+  ["กฎหมายที่มีลำดับศักดิ์สูงสุดของไทยคือข้อใด", ["พระราชบัญญัติ","พระราชกำหนด","รัฐธรรมนูญ","เทศบัญญัติ"], 2, "รัฐธรรมนูญเป็นกฎหมายสูงสุด กฎหมายอื่นจะขัดหรือแย้งไม่ได้"],
+  ["ตลาดที่มีผู้ขายเพียงรายเดียว เรียกว่าตลาดแบบใด", ["ตลาดแข่งขันสมบูรณ์","ตลาดผูกขาด","ตลาดผู้ขายน้อยราย","ตลาดนัด"], 1, "ผู้ขายรายเดียวกำหนดราคาได้เอง เรียกว่าตลาดผูกขาด"],
+  ["ตามกฎของอุปสงค์ เมื่อราคาสินค้าสูงขึ้นจะเกิดอะไร", ["ปริมาณซื้อเพิ่มขึ้น","ปริมาณซื้อลดลง","ปริมาณขายลดลง","ราคาจะลดลงทันที"], 1, "ราคากับปริมาณความต้องการซื้อแปรผกผันกัน"],
+  ["ไตรสิกขาประกอบด้วยข้อใด", ["ศีล สมาธิ ปัญญา","ทาน ศีล ภาวนา","พุทธ ธรรม สงฆ์","เมตตา กรุณา มุทิตา"], 0, "ไตรสิกขา คือ ศีล สมาธิ ปัญญา เป็นหลักการฝึกตน"],
+],
+},
+3: {
+math: [
+  ["คำตอบของอสมการ 3x − 5 > 10 คือข้อใด", ["x > 5","x < 5","x > 15","x > 5/3"], 0, "3x > 15 ดังนั้น x > 5"],
+  ["คำตอบของสมการ x² − 5x + 6 = 0 คือข้อใด", ["2 และ 3","−2 และ −3","1 และ 6","−1 และ 6"], 0, "แยกตัวประกอบเป็น (x − 2)(x − 3) = 0"],
+  ["ถ้า x + y = 10 และ x − y = 4 แล้ว x และ y มีค่าเท่าใด", ["x = 6, y = 4","x = 7, y = 3","x = 8, y = 2","x = 3, y = 7"], 1, "บวกสองสมการได้ 2x = 14, x = 7 แล้ว y = 3"],
+  ["sin 30° มีค่าเท่าใด", ["1/2","√3/2","1","√2/2"], 0, "ค่าที่ควรจำ sin 30° = 1/2, cos 30° = √3/2"],
+  ["tan 45° มีค่าเท่าใด", ["0","1/2","1","√3"], 2, "ที่ 45° ด้านตรงข้ามยาวเท่าด้านประชิด tan = 1"],
+  ["ทอดลูกเต๋า 1 ลูก 1 ครั้ง ความน่าจะเป็นที่จะได้แต้มคู่เป็นเท่าใด", ["1/6","1/3","1/2","2/3"], 2, "แต้มคู่มี 2, 4, 6 รวม 3 จาก 6 แบบ = 1/2"],
+  ["กรวยรัศมีฐาน 3 ซม. สูง 4 ซม. มีปริมาตรเท่าใด", ["12π ลบ.ซม.","36π ลบ.ซม.","4π ลบ.ซม.","15π ลบ.ซม."], 0, "⅓πr²h = ⅓ × π × 9 × 4 = 12π"],
+  ["ทรงกลมรัศมี 3 ซม. มีปริมาตรเท่าใด", ["12π ลบ.ซม.","27π ลบ.ซม.","36π ลบ.ซม.","108π ลบ.ซม."], 2, "⁴⁄₃πr³ = ⁴⁄₃ × π × 27 = 36π"],
+  ["△ABC คล้ายกับ △DEF โดย AB = 4, DE = 8 และ BC = 5 แล้ว EF ยาวเท่าใด", ["2.5","9","10","20"], 2, "อัตราส่วนด้านคือ 8 : 4 = 2 เท่า EF = 5 × 2 = 10"],
+  ["กราฟของ y = x² − 4 มีจุดต่ำสุดที่จุดใด", ["(0, −4)","(0, 4)","(2, 0)","(−4, 0)"], 0, "x² มีค่าน้อยสุดเป็น 0 เมื่อ x = 0 จึงได้ y = −4"],
+],
+sci: [
+  ["ต้นถั่วสูง (T) เป็นลักษณะเด่น ผสม Tt × Tt จะได้ต้นเตี้ยกี่เปอร์เซ็นต์", ["0%","25%","50%","75%"], 1, "ลูกได้ TT : Tt : tt = 1 : 2 : 1 ต้นเตี้ย (tt) เป็น 1 ใน 4 = 25%"],
+  ["เซลล์ร่างกายของคนปกติมีโครโมโซมกี่แท่ง", ["23 แท่ง","44 แท่ง","46 แท่ง","48 แท่ง"], 2, "มี 23 คู่ = 46 แท่ง เป็นออโตโซม 22 คู่ และโครโมโซมเพศ 1 คู่"],
+  ["ในโซ่อาหาร หญ้า → ตั๊กแตน → กบ → งู สิ่งใดเป็นผู้ผลิต", ["หญ้า","ตั๊กแตน","กบ","งู"], 0, "หญ้าสร้างอาหารเองได้ด้วยการสังเคราะห์ด้วยแสง"],
+  ["ข้อใดเป็นผู้ย่อยสลายในระบบนิเวศ", ["เห็ดรา","ต้นมะม่วง","กระต่าย","เหยี่ยว"], 0, "เห็ดราย่อยซากสิ่งมีชีวิตให้เป็นสารอนินทรีย์คืนสู่ดิน"],
+  ["ตัวต้านทาน 10 Ω มีกระแสไหลผ่าน 2 A มีความต่างศักย์เท่าใด", ["5 V","12 V","20 V","0.2 V"], 2, "กฎของโอห์ม V = IR = 2 × 10 = 20 โวลต์"],
+  ["เตารีดกำลังไฟฟ้า 1,000 วัตต์ ใช้งาน 2 ชั่วโมง ใช้พลังงานไฟฟ้ากี่หน่วย", ["0.5 หน่วย","2 หน่วย","20 หน่วย","2,000 หน่วย"], 1, "1 หน่วย = 1 kWh ดังนั้น 1 kW × 2 h = 2 หน่วย"],
+  ["สารละลายกรดมีค่า pH เป็นอย่างไร", ["น้อยกว่า 7","เท่ากับ 7","มากกว่า 7","เท่ากับ 14"], 0, "กรด pH < 7, กลาง pH = 7, เบส pH > 7"],
+  ["กรดทำปฏิกิริยากับเบสได้ผลิตภัณฑ์ใด", ["เกลือและน้ำ","แก๊สไฮโดรเจน","แก๊สออกซิเจน","น้ำตาลและน้ำ"], 0, "เป็นปฏิกิริยาสะเทิน ได้เกลือและน้ำ"],
+  ["ฤดูกาลบนโลกเกิดจากสาเหตุใด", ["ระยะห่างระหว่างโลกกับดวงจันทร์","แกนโลกเอียงขณะโคจรรอบดวงอาทิตย์","โลกหมุนรอบตัวเอง","ดวงอาทิตย์หมุนรอบโลก"], 1, "แกนโลกเอียงประมาณ 23.5° ทำให้แต่ละซีกโลกรับแสงไม่เท่ากันในรอบปี"],
+  ["ปรากฏการณ์น้ำขึ้นน้ำลงเกิดจากสิ่งใดเป็นหลัก", ["ลมมรสุม","แรงโน้มถ่วงของดวงจันทร์และดวงอาทิตย์","การหมุนของแกนโลกอย่างเดียว","แผ่นดินไหว"], 1, "แรงดึงดูดของดวงจันทร์มีผลมากที่สุด รองลงมาคือดวงอาทิตย์"],
+],
+thai: [
+  ["“บทละครพูดเรื่องเห็นแก่ลูก” เป็นพระราชนิพนธ์ในรัชกาลใด", ["รัชกาลที่ 4","รัชกาลที่ 5","รัชกาลที่ 6","รัชกาลที่ 7"], 2, "พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว (รัชกาลที่ 6) ทรงพระราชนิพนธ์"],
+  ["“ขุนช้างขุนแผน” แต่งด้วยคำประพันธ์ประเภทใด", ["กาพย์","โคลง","เสภา","ฉันท์"], 2, "เป็นกลอนเสภา ใช้ขับเสภาประกอบกรับ"],
+  ["ข้อใดเป็นประโยคที่ใช้ประธานเป็นผู้ถูกกระทำ", ["แม่ส่งจดหมายเมื่อวานนี้","จดหมายถูกส่งไปเมื่อวานนี้","ฉันจะส่งจดหมาย","น้องกำลังเขียนจดหมาย"], 1, "จดหมายเป็นผู้ถูกกระทำ ใช้คำว่า “ถูก” ช่วย"],
+  ["คำราชาศัพท์ “พระเนตร” หมายถึงอะไร", ["หู","ตา","จมูก","ปาก"], 1, "พระเนตร = ตา, พระกรรณ = หู, พระนาสิก = จมูก"],
+  ["ข้อความใดเป็นข้อเท็จจริง", ["ทุเรียนเป็นผลไม้ที่อร่อยที่สุด","กรุงเทพมหานครเป็นเมืองหลวงของประเทศไทย","ฤดูหนาวเป็นฤดูที่น่าอยู่ที่สุด","ภาษาไทยเป็นวิชาที่ง่ายที่สุด"], 1, "ข้อเท็จจริงพิสูจน์ได้ ข้ออื่นเป็นความคิดเห็น"],
+  ["คำใดมาจากภาษาบาลี", ["กษัตริย์","ขัตติยะ","ศึกษา","ภรรยา"], 1, "ขัตติยะ (บาลี) คู่กับ กษัตริย์ (สันสกฤต) คำที่มี ศ ษ หรือ รร มักมาจากสันสกฤต"],
+  ["กลอนสุภาพ คำสุดท้ายของวรรคสดับส่งสัมผัสไปยังคำใด", ["คำสุดท้ายของวรรครับ","คำที่ 3 หรือ 5 ของวรรครับ","คำแรกของวรรครอง","คำสุดท้ายของวรรคส่ง"], 1, "สัมผัสนอกจากท้ายวรรคสดับไปคำที่ 3 หรือ 5 ของวรรครับ"],
+  ["เรียงความที่สมบูรณ์ประกอบด้วยส่วนใดบ้าง", ["ชื่อเรื่อง คำนำ สรุป","คำนำ เนื้อเรื่อง สรุป","บทนำ ตัวอย่าง อ้างอิง","คำนำ ภาพประกอบ สรุป"], 1, "เรียงความมี 3 ส่วน คือ คำนำ เนื้อเรื่อง และสรุป"],
+  ["สำนวน “ชักแม่น้ำทั้งห้า” หมายถึงอะไร", ["เดินทางไกล","พูดหว่านล้อมยืดยาวเพื่อให้ได้สิ่งที่ต้องการ","ทำงานหลายอย่างพร้อมกัน","ขอความช่วยเหลือจากหลายคน"], 1, "มาจากเรื่องมหาเวสสันดรชาดก ชูชกพูดยกยออ้อมค้อมก่อนขอสิ่งที่ต้องการ"],
+  ["“กาพย์ห่อโคลงประพาสธารทองแดง” เป็นผลงานของใคร", ["สุนทรภู่","เจ้าฟ้าธรรมธิเบศร","ศรีปราชญ์","พระยาตรัง"], 1, "เจ้าฟ้าธรรมธิเบศร (เจ้าฟ้ากุ้ง) สมัยอยุธยา"],
+],
+eng: [
+  ["The cake ___ by my mother yesterday.", ["made","is made","was made","has made"], 2, "Passive voice อดีต: was/were + V3"],
+  ["I ___ my homework already. Can I go out now?", ["finish","finished","have finished","am finishing"], 2, "already บอกว่าเสร็จแล้วถึงตอนนี้ ใช้ present perfect"],
+  ["The man ___ lives next door is a doctor.", ["which","who","whose","where"], 1, "who ใช้แทนคน"],
+  ["She said, “I am tired.” → She said that she ___ tired.", ["is","was","be","has been"], 1, "Reported speech เลื่อน tense: am → was"],
+  ["If I ___ a bird, I would fly to you.", ["am","was","were","be"], 2, "Second conditional สมมติสิ่งที่เป็นไปไม่ได้ ใช้ were กับทุกประธาน"],
+  ["I'm looking forward to ___ you soon.", ["see","seeing","saw","seen"], 1, "look forward to + V-ing (to ในที่นี้เป็นบุพบท)"],
+  ["While I ___ TV, the phone rang.", ["watch","watched","was watching","am watching"], 2, "เหตุการณ์ที่กำลังทำอยู่แล้วมีเหตุการณ์อื่นแทรก ใช้ past continuous"],
+  ["Which sentence is the most polite?", ["Where's the station?","Tell me where the station is.","Could you tell me where the station is?","Station, where?"], 2, "Could you…? เป็นรูปขอร้องที่สุภาพ"],
+  ["What is the opposite of “increase”?", ["include","decrease","improve","raise"], 1, "increase = เพิ่มขึ้น, decrease = ลดลง"],
+  ["“Tom gets up at 6.00. He has breakfast at 6.30 and leaves home at 7.00.”\nWhat time does Tom leave home?", ["6.00","6.30","7.00","7.30"], 2, "ข้อความบอกว่า leaves home at 7.00"],
+],
+soc: [
+  ["กรุงรัตนโกสินทร์สถาปนาขึ้นใน พ.ศ. ใด", ["2310","2325","2394","2475"], 1, "รัชกาลที่ 1 สถาปนากรุงรัตนโกสินทร์เมื่อ พ.ศ. 2325"],
+  ["พระมหากษัตริย์พระองค์ใดทรงประกาศเลิกทาส", ["รัชกาลที่ 3","รัชกาลที่ 4","รัชกาลที่ 5","รัชกาลที่ 6"], 2, "พระบาทสมเด็จพระจุลจอมเกล้าเจ้าอยู่หัวทรงเลิกทาสอย่างค่อยเป็นค่อยไป"],
+  ["การเปลี่ยนแปลงการปกครอง 24 มิถุนายน พ.ศ. 2475 เกิดในรัชกาลใด", ["รัชกาลที่ 5","รัชกาลที่ 6","รัชกาลที่ 7","รัชกาลที่ 8"], 2, "สมัยพระบาทสมเด็จพระปกเกล้าเจ้าอยู่หัว คณะราษฎรเปลี่ยนเป็นระบอบประชาธิปไตย"],
+  ["สนธิสัญญาเบาว์ริงเป็นสนธิสัญญาที่ไทยทำกับประเทศใด", ["ฝรั่งเศส","อังกฤษ","สหรัฐอเมริกา","ญี่ปุ่น"], 1, "ทำกับอังกฤษใน พ.ศ. 2398 สมัยรัชกาลที่ 4"],
+  ["แม่น้ำแอมะซอนอยู่ในทวีปใด", ["แอฟริกา","อเมริกาเหนือ","อเมริกาใต้","ออสเตรเลีย"], 2, "แอมะซอนไหลผ่านบราซิล มีปริมาณน้ำมากที่สุดในโลก"],
+  ["เทือกเขาร็อกกีอยู่ในทวีปใด", ["อเมริกาเหนือ","อเมริกาใต้","ยุโรป","เอเชีย"], 0, "ร็อกกีพาดผ่านทางตะวันตกของแคนาดาและสหรัฐอเมริกา ส่วนแอนดีสอยู่อเมริกาใต้"],
+  ["ภาวะเงินเฟ้อหมายถึงข้อใด", ["ราคาสินค้าโดยทั่วไปสูงขึ้นต่อเนื่อง","ราคาสินค้าโดยทั่วไปลดลงต่อเนื่อง","ประชาชนมีงานทำทุกคน","รัฐบาลพิมพ์ธนบัตรลดลง"], 0, "เงินจำนวนเท่าเดิมซื้อของได้น้อยลง"],
+  ["อาเซียนก่อตั้งขึ้นโดยการลงนามในเอกสารใด", ["ปฏิญญากรุงเทพ","กฎบัตรสหประชาชาติ","สนธิสัญญาแวร์ซาย","ปฏิญญาบาหลี"], 0, "ลงนามที่กรุงเทพฯ เมื่อ 8 สิงหาคม พ.ศ. 2510"],
+  ["ผู้มีสิทธิเลือกตั้ง ส.ส. ต้องมีอายุอย่างน้อยเท่าใดในวันเลือกตั้ง", ["15 ปี","18 ปี","20 ปี","25 ปี"], 1, "รัฐธรรมนูญกำหนดอายุไม่ต่ำกว่า 18 ปีในวันเลือกตั้ง"],
+  ["ผู้สถาปนากรุงรัตนโกสินทร์คือใคร", ["สมเด็จพระเจ้าตากสินมหาราช","พระบาทสมเด็จพระพุทธยอดฟ้าจุฬาโลกมหาราช","พระบาทสมเด็จพระนั่งเกล้าเจ้าอยู่หัว","พระบาทสมเด็จพระจอมเกล้าเจ้าอยู่หัว"], 1, "รัชกาลที่ 1 ย้ายราชธานีจากธนบุรีมาฝั่งตะวันออกของแม่น้ำเจ้าพระยา"],
+],
+},
+};
+
+/* ---------- tiny DOM helper (text only, never HTML) ---------- */
+function h(tag, attrs, ...kids){
+  const el = document.createElement(tag);
+  if (attrs) for (const k in attrs){
+    const v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (k === "style") el.setAttribute("style", v);
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of kids.flat()){
+    if (c == null || c === false) continue;
+    el.append(c instanceof Node ? c : document.createTextNode(String(c)));
+  }
+  return el;
+}
+const $ = id => document.getElementById(id);
+const app = $("app");
+const num = v => (typeof v === "number" && isFinite(v)) ? v : 0;
+const clean = s => String(s || "").replace(/[\u0000-\u001f\u007f​-‏‪-‮⁠-⁯]/g, "").trim().slice(0, 20);
+const store = {
+  get(area, k){ try { return window[area].getItem(k); } catch (e){ return null; } },
+  set(area, k, v){ try { v == null ? window[area].removeItem(k) : window[area].setItem(k, v); } catch (e){} },
+};
+
+/* ---------- state ---------- */
+const S = {
+  screen: "home",
+  nick: clean(store.get("localStorage", "sanamsob.nick")),
+  color: Math.floor(Math.random() * 8),
+  code: null,
+  host: false,
+  game: { v: 0, round: null, g: 1, s: "math", phase: "lobby" },
+  room: null,       // last state from the server
+  my: null,         // this player's run of the current round
+  q: null,          // current question {start, locked, timer, auto}
+  homeErr: "",
+};
+{ const c = parseInt(store.get("localStorage", "sanamsob.color"), 10); if (c >= 0 && c < 8) S.color = c; }
+// One player per tab: the id lives in sessionStorage so a reload rejoins as the same player.
+let PID = store.get("sessionStorage", "sanamsob.pid");
+if (!PID || !/^[a-z0-9]{16,40}$/.test(PID)){
+  PID = Array.from(crypto.getRandomValues(new Uint8Array(20)), b => "abcdefghijklmnopqrstuvwxyz0123456789"[b % 36]).join("");
+  store.set("sessionStorage", "sanamsob.pid", PID);
+}
+
+/* ---------- server ---------- */
+const ERR = {
+  no_storage: "เซิร์ฟเวอร์ยังไม่ได้เชื่อมฐานข้อมูล ให้เจ้าของเว็บเพิ่ม Upstash Redis ในหน้า Storage ของ Vercel แล้ว Redeploy",
+  room_not_found: "ไม่พบห้องนี้ รหัสอาจผิด หรือห้องหมดอายุแล้ว",
+  bad_code: "รหัสห้องมี 5 ตัว ดูได้จากหน้าจอของเจ้าของห้อง",
+  bad_nick: "ใส่ชื่อในเกมก่อน เพื่อน ๆ จะได้รู้ว่าใครเป็นใคร",
+  host_online: "เจ้าของห้องยังอยู่ในห้อง",
+  network: "ต่ออินเทอร์เน็ตไม่ได้ ลองใหม่อีกครั้ง",
+};
+const errText = e => ERR[e && e.code] || ERR.network;
+async function api(action, body){
+  let r;
+  try {
+    r = await fetch("/api/room", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action, pid: PID, ...body }) });
+  } catch (e){ setNet(false); throw Object.assign(new Error("network"), { code: "network" }); }
+  const j = await r.json().catch(() => ({ error: "network" }));
+  if (!r.ok){ setNet(r.status < 500); throw Object.assign(new Error(j.error || "error"), { code: j.error || "network", status: r.status }); }
+  setNet(true);
+  return j;
+}
+let netOk = null;
+function setNet(on){
+  if (netOk === on) return;
+  netOk = on;
+  $("netdot").className = "dot" + (on ? " on" : "");
+  $("nettext").textContent = on ? "ออนไลน์" : "เชื่อมต่อไม่ได้";
+}
+
+let pollT = 0, pollGen = 0;
+function startPolling(){
+  stopPolling();
+  const gen = ++pollGen;
+  const tick = async () => {
+    if (gen !== pollGen) return;
+    if (S.code){
+      try { applyState(await api("state", { code: S.code })); }
+      catch (e){ if (e.code === "room_not_found" && gen === pollGen){ leaveRoom("ห้องนี้หมดอายุแล้ว"); return; } }
+    } else if (S.screen === "home"){
+      try { S.openRooms = (await api("rooms", {})).rooms || []; renderOpenRooms(); }
+      catch (e){ S.openRooms = null; renderOpenRooms(e); }
+    }
+    if (gen !== pollGen) return;
+    const delay = document.hidden ? 5000 : S.code ? 1500 : 5000;
+    pollT = setTimeout(tick, delay);
+  };
+  tick();
+}
+function stopPolling(){ pollGen++; clearTimeout(pollT); }
+document.addEventListener("visibilitychange", () => { if (!document.hidden) startPolling(); });
+
+function myProgress(){
+  const m = S.my;
+  if (!m) return null;
+  return { round: m.round, score: m.score, idx: m.idx, correct: m.correct, time: Math.round(m.time), done: m.done, marks: m.answers.map(a => a.ok ? "1" : "0").join("") };
+}
+let progQ = Promise.resolve();
+function pushProgress(){
+  const code = S.code, p = myProgress();
+  if (!code) return;
+  progQ = progQ.then(() => api("progress", { code, nick: S.nick, color: S.color, p })).catch(() => {});
+}
+
+function applyState(st){
+  if (!st || st.code !== S.code) return;
+  if (S.room && num(st.meta.v) < num(S.room.meta.v)) return; // an older answer arrived late
+  S.room = st;
+  S.host = !!st.you.host;
+  S.game = { v: st.meta.v, round: st.meta.round, g: st.meta.g, s: st.meta.s, phase: st.meta.phase };
+  const mine = st.players.find(p => p.me);
+  // Back from a reload in the middle of a round: pick up where the server says we were.
+  if (!S.my && mine && mine.p && st.meta.round && mine.p.round === st.meta.round){
+    const m = mine.p;
+    S.my = { round: m.round, idx: m.idx, score: m.score, correct: m.correct, time: m.time, done: m.done, answers: m.marks.split("").map(c => ({ pick: null, ok: c === "1" })) };
+    go(m.done || m.idx >= 10 ? "done" : "play");
+    return;
+  }
+  if (S.game.phase === "play" && S.game.round && (!S.my || S.my.round !== S.game.round) && (S.screen === "lobby" || S.screen === "done")){ startPlay(); return; }
+  if (S.game.phase === "lobby" && S.screen === "done" && !S.host){ S.my = null; go("lobby"); return; }
+  refresh();
+}
+
+function players(){
+  const list = (S.room ? S.room.players : []).map(p => ({
+    id: p.id, me: !!p.me, host: !!p.host, nick: clean(p.nick) || "ผู้เล่น", color: Math.abs(num(p.color) | 0) % 8, online: p.online,
+    p: p.p ? { round: String(p.p.round || ""), score: num(p.p.score), idx: num(p.p.idx), correct: num(p.p.correct), time: num(p.p.time), done: !!p.p.done, marks: String(p.p.marks || "") } : null,
+  }));
+  let me = list.find(p => p.me);
+  if (!me){ me = { id: "me", me: true, host: S.host, nick: S.nick, color: S.color, online: true }; list.push(me); }
+  me.nick = S.nick; me.color = S.color; me.p = myProgress();
+  return list;
+}
+const currentHost = () => players().find(p => p.host) || null;
+
+/* ---------- room join / leave ---------- */
+async function enterRoom(action, code){
+  const btns = app.querySelectorAll("button");
+  btns.forEach(b => b.disabled = true);
+  try {
+    const st = await api(action, { code, nick: S.nick, color: S.color });
+    S.code = st.code; S.room = null; S.my = null;
+    store.set("sessionStorage", "sanamsob.room", S.code);
+    try { history.replaceState(null, "", "?room=" + S.code); } catch (e){}
+    S.screen = "lobby";
+    applyState(st);
+    if (S.screen === "lobby") render();
+    startPolling();
+  } catch (e){
+    S.homeErr = errText(e);
+    store.set("sessionStorage", "sanamsob.room", null);
+    render();
+  }
+}
+function leaveRoom(msg){
+  stopTimer();
+  if (S.code) api("leave", { code: S.code }).catch(() => {});
+  S.code = null; S.host = false; S.my = null; S.room = null; S.homeErr = typeof msg === "string" ? msg : "";
+  store.set("sessionStorage", "sanamsob.room", null);
+  try { history.replaceState(null, "", location.pathname); } catch (e){}
+  go("home");
+  startPolling();
+}
+async function hostAction(action, extra){
+  try { applyState(await api(action, { code: S.code, ...extra })); }
+  catch (e){ flash(errText(e)); }
+}
+function flash(text){
+  const n = h("p", { class: "note pop", role: "status" }, text);
+  app.prepend(n);
+  setTimeout(() => n.remove(), 4000);
+}
+
+/* ---------- game flow ---------- */
+function bank(){ return BANK[S.game.g][S.game.s]; }
+function startPlay(){
+  S.my = { round: S.game.round, idx: 0, score: 0, correct: 0, time: 0, answers: [], done: false };
+  pushProgress();
+  go("play");
+}
+function hostStart(){ hostAction("start"); }
+async function hostNewGame(){
+  await hostAction("newgame");
+  if (S.game.phase === "lobby"){ S.my = null; pushProgress(); go("lobby"); }
+}
+function takeOver(){ hostAction("takeover"); }
+
+function stopTimer(){ if (S.q){ clearInterval(S.q.timer); clearTimeout(S.q.auto); } }
+function pick(i){
+  const q = S.q;
+  if (!q || q.locked) return;
+  q.locked = true;
+  clearInterval(q.timer);
+  const used = Math.min(QTIME, performance.now() - q.start);
+  const item = bank()[S.my.idx];
+  const ok = i === item[2];
+  const pts = ok ? 100 + Math.round(50 * (QTIME - used) / QTIME) : 0;
+  S.my.answers.push({ pick: i, ok, pts });
+  S.my.score += pts; S.my.correct += ok ? 1 : 0; S.my.time += used; S.my.idx += 1;
+  pushProgress();
+  showFeedback(item, i, ok, pts);
+  renderBoard();
+}
+function next(){
+  stopTimer();
+  if (S.my.idx >= 10){ S.my.done = true; pushProgress(); go("done"); }
+  else renderQuestion();
+}
+
+/* ---------- rendering ---------- */
+let lastKey = "";
+function go(screen){ S.screen = screen; render(); window.scrollTo(0, 0); }
+function render(){
+  if (S.screen !== "play") stopTimer();
+  lastKey = "";
+  app.replaceChildren();
+  if (S.screen === "home") renderHome();
+  else if (S.screen === "lobby") renderLobby();
+  else if (S.screen === "play") renderPlay();
+  else if (S.screen === "done") renderDone();
+}
+function refresh(){
+  // Skip re-rendering when nothing on screen changed, so buttons and focus stay put.
+  const key = S.screen + JSON.stringify([S.game, S.host, S.room && S.room.hostOnline, players()]);
+  if (key === lastKey) return;
+  lastKey = key;
+  if (S.screen === "lobby") renderLobby();
+  else if (S.screen === "play") renderBoard();
+  else if (S.screen === "done") renderDone();
+}
+function avatar(pl){ return h("span", { class: "av", style: `background:var(--c${pl.color})` }, (pl.nick || "?").slice(0, 1)); }
+function saveNick(v){ S.nick = clean(v); store.set("localStorage", "sanamsob.nick", S.nick); store.set("localStorage", "sanamsob.color", String(S.color)); }
+function gradeName(g){ return "ม." + g; }
+
+/* home */
+function renderHome(){
+  const nickIn = h("input", { class: "input", id: "nick", maxlength: "20", placeholder: "เช่น น้องมายด์ ม.2/4", value: S.nick, autocomplete: "nickname" });
+  const codeIn = h("input", { class: "input code", id: "joincode", maxlength: "5", placeholder: "รหัส", autocomplete: "off", spellcheck: "false" });
+  const fromLink = new URLSearchParams(location.search).get("room") || "";
+  if (/^[a-z0-9]{5}$/i.test(fromLink)) codeIn.value = fromLink.toUpperCase();
+  const err = h("p", { class: "small", style: "color:var(--bad)", id: "homeerr", hidden: !S.homeErr }, S.homeErr);
+  const needNick = () => {
+    saveNick(nickIn.value);
+    if (!S.nick){ err.textContent = ERR.bad_nick; err.hidden = false; nickIn.focus(); return false; }
+    err.hidden = true; S.homeErr = ""; return true;
+  };
+  nickIn.addEventListener("input", () => saveNick(nickIn.value));
+  const create = () => { if (needNick()) enterRoom("create"); };
+  const join = () => {
+    if (!needNick()) return;
+    const c = codeIn.value.trim().toLowerCase();
+    if (!/^[a-z0-9]{5}$/.test(c)){ err.textContent = ERR.bad_code; err.hidden = false; codeIn.focus(); return; }
+    enterRoom("join", c);
+  };
+  codeIn.addEventListener("keydown", e => { if (e.key === "Enter") join(); });
+  S.joinFromList = c => { if (needNick()) enterRoom("join", c); };
+
+  const deco = h("div", { class: "bubbles-deco", "aria-hidden": "true" },
+    ...[[1,1],[2,3],[3,0],[4,2]].flatMap(([n, f]) => [h("span", null, String(n).padStart(2, "0")), ...LABELS.map((l, i) => h("span", { class: "b" + (i === f ? " f" : "") }, l))]));
+
+  app.append(h("div", { class: "stack" },
+    h("section", { class: "hero" },
+      h("div", { style: "display:flex;flex-direction:column;gap:12px" },
+        h("span", { class: "lbl" }, "ข้อสอบจำลอง ม.1 – ม.3"),
+        h("h1", null, "สร้างห้อง ชวนเพื่อน แล้วแข่งกันฝนคำตอบ"),
+        h("p", { class: "muted" }, "5 วิชา วิชาละ 10 ข้อ ข้อละ 20 วินาที ตอบถูกได้ 100 คะแนน ตอบเร็วได้โบนัสเพิ่มอีกสูงสุด 50 จบแล้วดูเฉลยทีละข้อ")),
+      deco),
+    h("section", { class: "plain" },
+      h("div", { class: "field" }, h("label", { class: "lbl", for: "nick" }, "ชื่อในเกม"), nickIn),
+      err),
+    h("section", { class: "split" },
+      h("div", { class: "sheet" },
+        h("div", { class: "sheet-body" },
+          h("span", { class: "lbl" }, "เป็นเจ้าของห้อง"),
+          h("h2", null, "สร้างห้องใหม่"),
+          h("p", { class: "muted" }, "เลือกชั้นและวิชา แล้วส่งลิงก์ให้เพื่อน กดเริ่มเมื่อทุกคนเข้ามาครบ"),
+          h("div", null, h("button", { class: "btn primary big", type: "button", id: "createbtn", onclick: create }, "สร้างห้อง")))),
+      h("div", { class: "sheet" },
+        h("div", { class: "sheet-body" },
+          h("span", { class: "lbl" }, "มีรหัสห้องแล้ว"),
+          h("h2", null, "เข้าห้องเพื่อน"),
+          h("div", { class: "row" }, h("div", { style: "flex:1 1 140px;min-width:0" }, codeIn), h("button", { class: "btn big", type: "button", id: "joinbtn", onclick: join }, "เข้าห้อง"))))),
+    h("section", { class: "plain" },
+      h("div", { class: "row", style: "justify-content:space-between" }, h("h3", null, "ห้องที่เปิดอยู่ตอนนี้"), h("span", { class: "small muted" }, "แตะเพื่อเข้าร่วม")),
+      h("div", { class: "rooms", id: "rooms" }, h("div", { class: "empty" }, "กำลังโหลดรายชื่อห้อง…"))),
+    h("section", { class: "codes", "aria-label": "วิชาที่มีในชุดข้อสอบ" },
+      SUBJ.map(s => h("div", null, h("span", { class: "mono small muted" }, s.code + "21101–" + s.code + "23101"), h("b", null, s.name))))
+  ));
+  if (S.openRooms) renderOpenRooms();
+  if (fromLink) (S.nick ? $("joinbtn") : nickIn).focus();
+}
+function renderOpenRooms(e){
+  const box = $("rooms");
+  if (!box) return;
+  box.replaceChildren();
+  if (e){ box.append(h("div", { class: "empty" }, errText(e))); return; }
+  const list = (S.openRooms || []).filter(r => /^[a-z0-9]{5}$/.test(r.code) && BANK[r.g] && BANK[r.g][r.s]);
+  if (!list.length){ box.append(h("div", { class: "empty" }, "ยังไม่มีห้องเปิด สร้างห้องแรกแล้วชวนเพื่อนเข้ามาได้เลย")); return; }
+  for (const r of list){
+    box.append(h("div", { class: "room-item" },
+      h("span", { class: "mono" }, r.code.toUpperCase()),
+      h("div", { style: "min-width:0" }, h("div", null, subjOf(r.s).name + " " + gradeName(r.g)), h("div", { class: "small muted" }, num(r.n) + " คน · " + (r.phase === "play" ? "กำลังสอบ" : "รอเริ่ม"))),
+      h("button", { class: "btn", type: "button", onclick: () => S.joinFromList(r.code) }, "เข้าร่วม")));
+  }
+}
+
+/* lobby */
+const inviteLink = () => location.origin + "/?room=" + S.code;
+function copy(text, input, btn){
+  const fallback = () => { input.select(); btn.textContent = "กด Ctrl+C"; };
+  try {
+    navigator.clipboard.writeText(text).then(() => { btn.textContent = "คัดลอกแล้ว"; setTimeout(() => { btn.textContent = "คัดลอก"; }, 1600); }, fallback);
+  } catch (e){ fallback(); }
+}
+function renderLobby(){
+  const focusId = document.activeElement && document.activeElement.id;
+  app.replaceChildren();
+  const pls = players();
+  const host = currentHost();
+  const amHost = S.host;
+  const g = S.game;
+  const hostGone = !amHost && (!host || !S.room || !S.room.hostOnline);
+
+  const link = inviteLink();
+  const linkIn = h("input", { class: "input", id: "invite", readonly: true, value: link });
+  const copyBtn = h("button", { class: "btn", type: "button", id: "copybtn" }, "คัดลอก");
+  copyBtn.addEventListener("click", () => copy(link, linkIn, copyBtn));
+
+  const gradeSeg = h("div", { class: "seg", role: "group", "aria-label": "ระดับชั้น" },
+    [1,2,3].map(n => h("button", { type: "button", id: "g" + n, "aria-pressed": String(g.g === n), disabled: !amHost, onclick: () => hostAction("config", { g: n }) }, gradeName(n))));
+  const subjGrid = h("div", { class: "subjects" },
+    SUBJ.map(s => h("button", { type: "button", id: "s-" + s.id, class: "subj", "aria-pressed": String(g.s === s.id), disabled: !amHost, onclick: () => hostAction("config", { s: s.id }) },
+      h("span", { class: "mono" }, courseCode(g.g, s.id)), h("b", null, s.name), h("span", { class: "small muted" }, "10 ข้อ"))));
+
+  app.append(h("div", { class: "stack" },
+    h("section", { class: "sheet" },
+      h("div", { class: "sheet-head" },
+        h("div", null, h("div", { class: "lbl" }, "รหัสห้อง"), h("div", { class: "bigcode" }, S.code.toUpperCase())),
+        h("div", null, h("div", { class: "lbl" }, "วิชา"), h("div", { class: "v" }, subjOf(g.s).name + " " + gradeName(g.g)), h("div", { class: "mono small muted" }, "รหัสวิชา " + courseCode(g.g, g.s))),
+        h("div", null, h("div", { class: "lbl" }, "ผู้เข้าสอบ"), h("div", { class: "v mono" }, pls.length + " คน"))),
+      h("div", { class: "sheet-body" },
+        h("div", { class: "field" },
+          h("span", { class: "lbl" }, "ลิงก์ชวนเพื่อน"),
+          h("div", { class: "linkbox" }, linkIn, copyBtn),
+          h("p", { class: "small muted" }, "ส่งลิงก์นี้ในกลุ่มแชท เพื่อนเปิดแล้วใส่ชื่อ กดเข้าห้องได้ทันที หรือให้เพื่อนกรอกรหัส " + S.code.toUpperCase() + " ที่หน้าแรก")),
+        h("div", { class: "field" }, h("span", { class: "lbl" }, "ระดับชั้น"), h("div", null, gradeSeg)),
+        h("div", { class: "field" }, h("span", { class: "lbl" }, "เลือกวิชา"), subjGrid),
+        h("div", { class: "field" },
+          h("span", { class: "lbl" }, "ในห้องตอนนี้"),
+          h("div", { class: "players" }, pls.map(pl => h("span", { class: "chip" }, avatar(pl), h("span", { class: "n" }, pl.nick + (pl.me ? " (คุณ)" : "")), pl.host ? h("span", { class: "pill" }, "เจ้าของห้อง") : null)))),
+        amHost
+          ? h("div", { class: "row" }, h("button", { class: "btn primary big", type: "button", id: "startbtn", onclick: hostStart }, "เริ่มสอบ"), h("span", { class: "small muted" }, "ทุกคนในห้องจะเริ่มทำข้อสอบชุดเดียวกันพร้อมกัน"))
+          : hostGone
+            ? h("div", { class: "row" }, h("p", { class: "note", style: "flex:1 1 260px" }, "เจ้าของห้องออกไปแล้ว คุณเป็นเจ้าของห้องแทนได้"), h("button", { class: "btn", type: "button", id: "takeover", onclick: takeOver }, "เป็นเจ้าของห้องแทน"))
+            : h("p", { class: "note" }, "รอ " + (host ? host.nick : "เจ้าของห้อง") + " กดเริ่มสอบ"),
+        h("div", null, h("button", { class: "btn ghost", type: "button", id: "leave", onclick: leaveRoom }, "ออกจากห้อง"))))));
+  if (focusId && $(focusId)) $(focusId).focus();
+}
+
+/* play */
+function renderPlay(){
+  app.append(h("div", { class: "play" },
+    h("section", { class: "sheet", id: "qsheet" }),
+    h("aside", { class: "plain board", id: "board", "aria-label": "อันดับสด" })));
+  renderQuestion();
+  renderBoard();
+}
+function renderQuestion(){
+  stopTimer();
+  const box = $("qsheet");
+  if (!box) return;
+  const item = bank()[S.my.idx];
+  const g = S.game;
+  const bar = h("i");
+  const timer = h("div", { class: "timer", role: "progressbar", "aria-label": "เวลาที่เหลือ" }, bar);
+  const secs = h("span", { class: "mono", id: "secs" }, "20");
+  const choices = h("div", { class: "choices", role: "group", "aria-label": "ตัวเลือก" },
+    item[1].map((t, i) => h("button", { type: "button", class: "ch", id: "c" + i, onclick: () => pick(i) }, h("span", { class: "bub" }, LABELS[i]), h("span", { class: "t" }, t))));
+  box.replaceChildren(
+    h("div", { class: "sheet-head" },
+      h("div", null, h("div", { class: "lbl" }, "รหัสวิชา"), h("div", { class: "v mono" }, courseCode(g.g, g.s))),
+      h("div", null, h("div", { class: "lbl" }, "วิชา"), h("div", { class: "v" }, subjOf(g.s).name + " " + gradeName(g.g))),
+      h("div", null, h("div", { class: "lbl" }, "คะแนน"), h("div", { class: "v mono", id: "myscore" }, String(S.my.score)))),
+    h("div", { class: "sheet-body pop" },
+      h("div", { class: "qnum" }, h("span", { class: "lbl" }, "ข้อ " + (S.my.idx + 1) + " / 10"), h("span", { class: "small muted" }, "เหลือ ", secs, " วินาที")),
+      timer,
+      h("p", { class: "qtext" }, item[0]),
+      choices,
+      h("div", { id: "fb" })));
+  const start = performance.now();
+  S.q = { start, locked: false, timer: 0, auto: 0 };
+  S.q.timer = setInterval(() => {
+    const rem = Math.max(0, QTIME - (performance.now() - start));
+    bar.style.transform = "scaleX(" + (rem / QTIME) + ")";
+    secs.textContent = String(Math.ceil(rem / 1000));
+    timer.classList.toggle("low", rem < 5000);
+    if (rem <= 0) pick(-1);
+  }, 100);
+  $("c0").focus({ preventScroll: true });
+}
+function showFeedback(item, i, ok, pts){
+  for (let k = 0; k < 4; k++){
+    const b = $("c" + k);
+    if (!b) continue;
+    b.disabled = true;
+    if (k === i) b.classList.add("picked");
+    if (k === item[2]) b.classList.add("right");
+    else if (k === i) b.classList.add("wrong");
+  }
+  $("myscore").textContent = String(S.my.score);
+  const last = S.my.idx >= 10;
+  const nextBtn = h("button", { class: "btn primary", type: "button", id: "nextbtn", onclick: next }, last ? "ดูผลสอบ" : "ข้อต่อไป");
+  const title = i < 0 ? "หมดเวลา" : ok ? "ถูกต้อง" : "ยังไม่ถูก";
+  $("fb").replaceChildren(h("div", { class: "fb pop " + (ok ? "ok" : "bad") },
+    h("h3", null, title, ok ? h("span", { class: "pts" }, "+" + pts) : h("span", { class: "small" }, "คำตอบคือ " + LABELS[item[2]] + ". " + item[1][item[2]])),
+    h("p", null, item[3]),
+    h("div", null, nextBtn)));
+  nextBtn.focus({ preventScroll: true });
+  S.q.auto = setTimeout(next, 7000);
+}
+function ranked(){
+  const round = S.my ? S.my.round : S.game.round;
+  return players().filter(pl => pl.p && pl.p.round === round)
+    .sort((a, b) => b.p.score - a.p.score || a.p.time - b.p.time);
+}
+function marks(str){
+  return h("div", { class: "marks", "aria-hidden": "true" }, Array.from({ length: 10 }, (_, k) => h("i", { class: k < str.length ? (str[k] === "1" ? "y" : "n") : "" })));
+}
+function renderBoard(){
+  const box = $("board");
+  if (!box) return;
+  const list = ranked();
+  const doneN = list.filter(p => p.p.done).length;
+  box.replaceChildren(
+    h("div", { class: "row", style: "justify-content:space-between" }, h("h3", null, "อันดับสด"), h("span", { class: "small muted mono" }, "เสร็จ " + doneN + "/" + list.length)),
+    h("ol", { class: "lb" }, list.map((pl, k) => h("li", { class: pl.me ? "me" : "" },
+      h("span", { class: "rk" }, String(k + 1)), avatar(pl),
+      h("div", { style: "min-width:0" }, h("div", { class: "nm" }, pl.nick + (pl.me ? " (คุณ)" : "")), marks(pl.p.marks)),
+      h("span", { class: "sc" }, String(pl.p.score))))));
+}
+
+/* done */
+function renderDone(){
+  app.replaceChildren();
+  const list = ranked();
+  const myRank = list.findIndex(p => p.me) + 1;
+  const all = list.length > 0 && list.every(p => p.p.done);
+  const host = currentHost();
+  const amHost = S.host;
+  const hostGone = !amHost && (!host || !S.room || !S.room.hostOnline);
+  const g = S.game;
+  const items = bank();
+  const m = S.my;
+
+  const top = list.slice(0, 3);
+  const order = [1, 0, 2].filter(k => top[k]);
+  const podium = all && list.length > 1 ? h("div", { class: "podium" },
+    order.map(k => h("div", { class: "pod p" + (k + 1) }, avatar(top[k]), h("span", { class: "nm" }, top[k].nick), h("span", { class: "mono small" }, top[k].p.score + " คะแนน"), h("div", { class: "blk" }, String(k + 1))))) : null;
+
+  app.append(h("div", { class: "stack" },
+    h("section", { class: "sheet" },
+      h("div", { class: "sheet-head" },
+        h("div", null, h("div", { class: "lbl" }, "ผลสอบ"), h("div", { class: "v" }, subjOf(g.s).name + " " + gradeName(g.g))),
+        h("div", null, h("div", { class: "lbl" }, "รหัสวิชา"), h("div", { class: "v mono" }, courseCode(g.g, g.s))),
+        h("div", null, h("div", { class: "lbl" }, "ห้อง"), h("div", { class: "v mono" }, (S.code || "").toUpperCase()))),
+      h("div", { class: "sheet-body" },
+        h("div", { class: "row", style: "justify-content:space-between;align-items:flex-end" },
+          h("div", null, h("div", { class: "lbl" }, S.nick), h("div", { class: "score-big" }, String(m.score)), h("div", { class: "muted" }, "คะแนนเต็ม 1,500")),
+          list.length > 1 ? h("div", { style: "text-align:right" }, h("div", { class: "lbl" }, "อันดับ"), h("div", { class: "score-big", style: "color:var(--ink)" }, String(myRank)), h("div", { class: "muted" }, "จาก " + list.length + " คน")) : null),
+        h("div", { class: "stats" },
+          h("div", null, h("span", { class: "small muted" }, "ตอบถูก"), h("b", null, m.correct + "/10")),
+          h("div", null, h("span", { class: "small muted" }, "เวลาเฉลี่ยต่อข้อ"), h("b", null, (m.time / 10000).toFixed(1) + " วิ")),
+          h("div", null, h("span", { class: "small muted" }, "ผลประเมิน"), h("b", { style: "font-family:var(--f-display);font-weight:500" }, m.correct >= 8 ? "ดีมาก" : m.correct >= 6 ? "ผ่าน" : "ทบทวนอีกนิด"))),
+        podium,
+        list.length > 1 && !all ? h("p", { class: "note" }, "รอเพื่อนทำให้เสร็จ (" + list.filter(p => p.p.done).length + "/" + list.length + " คน) อันดับจะอัปเดตเอง") : null,
+        list.length > 1 ? h("ol", { class: "lb" }, list.map((pl, k) => h("li", { class: pl.me ? "me" : "" },
+          h("span", { class: "rk" }, String(k + 1)), avatar(pl),
+          h("div", { style: "min-width:0" }, h("div", { class: "nm" }, pl.nick + (pl.me ? " (คุณ)" : "") + (pl.p.done ? "" : " · ข้อ " + Math.min(10, pl.p.idx + 1))), marks(pl.p.marks)),
+          h("span", { class: "sc" }, String(pl.p.score))))) : null,
+        h("div", { class: "row" },
+          amHost ? h("button", { class: "btn primary", type: "button", id: "again", onclick: hostNewGame }, "เลือกวิชาแล้วเล่นอีกรอบ")
+                 : hostGone ? h("button", { class: "btn", type: "button", id: "takeover2", onclick: takeOver }, "เป็นเจ้าของห้องแทน")
+                 : h("span", { class: "small muted" }, "เมื่อเจ้าของห้องเริ่มรอบใหม่ หน้าจอจะพาไปเอง"),
+          h("button", { class: "btn ghost", type: "button", id: "leave2", onclick: leaveRoom }, "ออกจากห้อง")))),
+    h("section", { class: "plain" },
+      h("h2", null, "เฉลยทีละข้อ"),
+      h("ol", { class: "review" }, items.map((it, k) => {
+        const a = m.answers[k] || { pick: -1, ok: false };
+        const yours = a.ok ? "" : a.pick == null ? "" : a.pick < 0 ? " · คุณไม่ได้ตอบ" : " · คุณตอบ " + LABELS[a.pick] + ". " + it[1][a.pick];
+        return h("li", null,
+          h("span", { class: "k " + (a.ok ? "y" : "n") }, String(k + 1)),
+          h("div", { style: "min-width:0;display:flex;flex-direction:column;gap:4px" },
+            h("p", { class: "q", style: "white-space:pre-line" }, it[0]),
+            h("p", { class: "small" }, "เฉลย ", h("b", null, LABELS[it[2]] + ". " + it[1][it[2]]), yours),
+            h("p", { class: "small muted" }, it[3])));
+      })))));
+}
+
+$("brand").addEventListener("click", () => { if (S.screen === "home") return; if (S.screen === "play" && S.my && !S.my.done) return; leaveRoom(); });
+
+// Reload inside a room: rejoin it as the same player.
+{
+  const saved = store.get("sessionStorage", "sanamsob.room");
+  render();
+  if (saved && /^[a-z0-9]{5}$/.test(saved) && S.nick) enterRoom("join", saved);
+  else startPolling();
+}
+</script>
+</body>
+</html>
